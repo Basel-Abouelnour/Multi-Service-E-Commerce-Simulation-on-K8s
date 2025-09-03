@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: product
+  name: product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+      - image: baselabouelnour/port-test
+        name: port-test
+        env:
+        - name: TARGET_HOST
+          value: "db"
+        - name: TARGET_PORT
+          value: "27017"
+      resources:
+        limits:
+          cpu: "0.5"
+          memory: "500Mi"

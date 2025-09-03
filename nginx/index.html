@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Service Status</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 2rem auto; }
+  h1 { text-align: center; }
+  .service { margin-bottom: 1.5rem; }
+  button { padding: 0.5rem 1rem; margin-right: 1rem; cursor: pointer; }
+  pre { background: #f0f0f0; padding: 1rem; border-radius: 4px; overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<h1>Service Status Checker</h1>
+
+<div class="service">
+  <strong>/order</strong>
+  <button onclick="checkStatus('/order')">Check</button>
+  <pre id="orderResult">Not checked yet</pre>
+</div>
+
+<div class="service">
+  <strong>/order/port2</strong>
+  <button onclick="checkStatus('/order/port2')">Check</button>
+  <pre id="orderPort2Result">Not checked yet</pre>
+</div>
+
+<div class="service">
+  <strong>/product</strong>
+  <button onclick="checkStatus('/product')">Check</button>
+  <pre id="productResult">Not checked yet</pre>
+</div>
+
+<script>
+  async function checkStatus(path) {
+    const preId = {
+      '/order': 'orderResult',
+      '/order/port2': 'orderPort2Result',
+      '/product': 'productResult'
+    }[path];
+
+    const pre = document.getElementById(preId);
+    pre.textContent = 'Loading...';
+
+    try {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+      pre.textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+      pre.textContent = 'Error: ' + err.message;
+    }
+  }
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - image: mongo:latest
+        name: mongo
+        env:
+        - name: MONGO_INITDB_DATABASE
+          value: "mongodb"
+      resources:
+        limits:
+          cpu: "1"
+          memory: "1Gi"
