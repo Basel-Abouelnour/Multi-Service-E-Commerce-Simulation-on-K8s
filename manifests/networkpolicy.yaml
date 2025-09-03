@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: limit-db-access
+spec: 
+  policyTypes:
+  - Ingress
+  podSelector:
+    matchLabels:
+      app: db
+  ingress:
+  - from: 
+    - podSelector:
+        matchLabels:
+          app: order
+    - podSelector:
+        matchLabels:
+          app: product
+    ports:
+    - protocol: TCP
+      port: 27017
